@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>jQuery exercise</title>
+  <style>
+.phrases {
+      margin: 30px 5px;
+      height: 300px;
+      width: 500px;
+      border: 1px solid gray;
+      position: absolute;
+}
+  </style>
+  </head>
+<body>
+  <h1>My favourite phrases</h1>
+
+  <div class="phrases">
+      <p id="phrase"> </p>
+  </div>
+  <form>
+    <button id="show">Show a phrase</button>
+    <input type="text" name="newPhrase" placeholder="AddNewPhrase">
+  </form>
+
+ <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script>
+  var phrases = [
+	"I like potatoes.",
+	"Today is Monday.",
+	"Tomorrow i go to the beach.",
+	"I am not in Paris.",
+	"Perhaps it is raining.",
+	"I don't like your photos."
+	];
+
+
+	var show_phrases = function () {
+		var randomphrase = phrases[Math.floor(Math.random()*phrases.length)];
+			$("#phrase").text(randomphrase)
+	};
+	
+	$('button').on('click', function(event) {
+		event.preventDefault();
+		show_phrases();
+	});
+
+	var add_phrases = function (newPhrase) {
+		phrases.push($('input[name="newPhrase"]').val());
+	};
+	
+	$('input').on('keypress',function(event) {
+		event.preventDefault();
+		if (e.which == 13) {
+    		$('form#login').submit();
+    		return false;
+  		}
+	});
+	
+
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Ironhack Geolocation</title>
+</head>
+​
+<body>
+  <h1 class="complex-heading">
+     Geolocation
+  </h1>
+  <button id="position">Where am I?</button>  
+  <p id="location"></p>
+  <img src="" id="map">
+​
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script>
+    function showMap(lat, lon) {
+      var location = lon+','+lat;
+      var token = 'pk.eyJ1IjoiYWx2YXJvZyIsImEiOiJjaWVtdjEwaWkwMDJtdGltMDNnOTB3ZzhxIn0.R6zB_wgxEloAmU8b1m7H6Q';
+      var url = 'https://api.mapbox.com/v4/mapbox.streets/'+location+',12/500x300.png?access_token='+token;
+      var map = document.getElementById('map');
+      console.log(map);
+      map.src = url;
+    }
+    function onLocation(position) {
+      console.log('Your latitude is ' + position.coords.latitude);
+      console.log('Your longitude is ' + position.coords.longitude);
+      document.getElementById('location').innerHTML = 'Lat: '+ position.coords.latitude + ', lon: ' + position.coords.longitude;
+      showMap(position.coords.latitude, position.coords.longitude);
+    }
+    function onError(err){
+      console.log(err);
+    }
+    function getLocation(event) {
+      console.log('geo');
+      if (!navigator.geolocation) {
+        console.log("geolocation isn't available");
+        return;
+      }
+      console.log("Geolocation in ON!");
+      navigator.geolocation.getCurrentPosition(onLocation, onError);
+    }
+    $('#position').on('click', getLocation)
+  </script>
+</body>
+</html>

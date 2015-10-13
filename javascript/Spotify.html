@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>jQuery exercise</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <style>
+  button {
+    height: 40px;
+    font-size: 18px;
+    background-color:#01f405;
+    border: 0px;
+  }
+
+  input { height: 40px;
+    font-size: 18px;
+    border: 0px;
+
+  }
+a {cursor: pointer;
+
+}
+  </style>
+</head>
+<body>
+  <h1>Spotify Artist Search</h1>
+  <form>
+    <input type="text" name="artist" placeholder="Artist">
+    <button id="search">Search</button>
+     <ul class="artist-list"></ul>
+  </form>
+
+
+<div class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+  <script>
+    $('#search').on('click', function(event) {
+    event.preventDefault()
+    searchArtists()
+    })
+
+    function searchArtists() {
+      var artist = $('input[name="artist"]').val();
+      var url = "https://api.spotify.com/v1/search?query=" + artist + "&type=artist";
+      var request = $.get(url);
+      request.done(showArtists)
+
+      function showArtists(artists) {
+      artists.artists.items.forEach(function appendLi (art) {
+        var html = '<div>' + '<a class="album" id="' + artist.id + 'data-toggle="modal" data-target="#myModal"' +'"href="#">' + art.name + '</a>'+'<br>' + ' <img src=' + art.images[0].url + ' height="140"></div><br>';
+        $('.artist-list').append(html);
+        });
+      }
+    }
+
+    $('#album').on('click', function(event) {
+      event.preventDefault()
+      var artistId = (this).id;
+      showAlbums()
+    })
+    
+    function getAlbums(artistId){
+      var request = $.get('href="https://api.spotify.com/v1/artists/' + artistId + '/albums"'); 
+      request.done(showAlbums);
+    }
+
+    function showAlbums(data) {
+     data.items.forEach(function(i){
+      var item = '<li>' + i.name + '</li>';
+      $('.modal-body ul').append(item);
+     })
+     
+    }
+    $('.modal').on('hidden.bs.modal', function() {
+      $(this).find('ul').empty();
+
+    })
+
+    
+  </script>
+</body>
+</html>
